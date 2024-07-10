@@ -50,7 +50,7 @@ const Home = () => {
             </tr>
           </thead>
           <tbody>
-            {notes.map((note, index) => (
+            {notes.map((note) => (
               <tr key={note._id} className="h-8">
                 <td className="border border-slate-700 rounded-md text-center">
                   {note.problemNumber}
