@@ -62,7 +62,7 @@ const Home = () => {
                   {note.difficulty}
                 </td>
                 <td className="border border-slate-700 rounded-md text-center max-md:hidden">
-                {note.tags.map((tag, tagIndex) => (
+                  {note.tags.map((tag, tagIndex) => (
                     <span key={tagIndex} className="mr-2">
                       {tag}
                     </span>
