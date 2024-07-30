@@ -5,10 +5,14 @@ import { Link } from "react-router-dom";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsInfoCircle } from "react-icons/bs";
 import { MdOutlineAddBox, MdOutlineDelete } from "react-icons/md";
+import BooksTable from "../components/home/NotesTable";
+import BooksCard from "../components/home/NotesCard";
 
 const Home = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showType, setShowType] = useState("table");
+
   useEffect(() => {
     setLoading(true);
     axios
@@ -24,6 +28,20 @@ const Home = () => {
   }, []);
   return (
     <div className="p-4">
+      <div className="flex justify-center items-center gap-x-4">
+        <button
+          className="bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg"
+          onClick={() => setShowType("table")}
+        >
+          Table
+        </button>
+        <button
+          className="bg-sky-300 hover:bg-sky-600 px-4 py-1 rounded-lg"
+          onClick={() => setShowType("card")}
+        >
+          Card
+        </button>
+      </div>
       <div className="flex justify-between items-center">
         <h1 className="text-3xl my-8">Notes List</h1>
         <Link to="/notes/create">
@@ -32,59 +50,10 @@ const Home = () => {
       </div>
       {loading ? (
         <Spinner />
+      ) : showType === "table" ? (
+        <BooksTable notes={notes} />
       ) : (
-        <table className="w-full border-separate border-spacing-2">
-          <thead>
-            <tr>
-              <th className="border border-slate-600 rounded-md">
-                Problem Number
-              </th>
-              <th className="border border-slate-600 rounded-md">Title</th>
-              <th className="border border-slate-600 rounded-md max-md:hidden">
-                Difficulty
-              </th>
-              <th className="border border-slate-600 rounded-md max-md:hidden">
-                Tags
-              </th>
-              <th className="border border-slate-600 rounded-md">Operations</th>
-            </tr>
-          </thead>
-          <tbody>
-            {notes.map((note) => (
-              <tr key={note._id} className="h-8">
-                <td className="border border-slate-700 rounded-md text-center">
-                  {note.problemNumber}
-                </td>
-                <td className="border border-slate-700 rounded-md text-center">
-                  {note.title}
-                </td>
-                <td className="border border-slate-700 rounded-md text-center">
-                  {note.difficulty}
-                </td>
-                <td className="border border-slate-700 rounded-md text-center max-md:hidden">
-                  {note.tags.map((tag, tagIndex) => (
-                    <span key={tagIndex} className="mr-2">
-                      {tag}
-                    </span>
-                  ))}
-                </td>
-                <td className="border border-slate-700 rounded-md text-center">
-                  <div className="flex justify-center gap-x-4">
-                    <Link to={`/notes/details/${note._id}`}>
-                      <BsInfoCircle className="text-2xl text-green-800" />
-                    </Link>
-                    <Link to={`/notes/edit/${note._id}`}>
-                      <AiOutlineEdit className="text-2xl text-yellow-600" />
-                    </Link>
-                    <Link to={`/notes/delete/${note._id}`}>
-                      <MdOutlineDelete className="text-2xl text-red-600" />
-                    </Link>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <BooksCard notes={notes} />
       )}
     </div>
   );

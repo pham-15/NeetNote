@@ -14,7 +14,9 @@ const ShowNote = () => {
     axios
       .get(`http://localhost:5555/notes/${id}`)
       .then((response) => {
-        setNote(response.data.note);
+        const note = response.data.note;
+        setNote(note);
+        console.log(note);
         setLoading(false);
       })
       .catch((error) => {
