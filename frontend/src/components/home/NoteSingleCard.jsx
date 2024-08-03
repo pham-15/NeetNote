@@ -28,13 +28,13 @@ const NoteSingleCard = ({ note }) => {
           className="text-3xl text-blue-800 hover:text-black cursor-pointer"
           onClick={() => setShowModal(true)}
         />
-        <Link to={`/books/details/${note._id}`}>
+        <Link to={`/notes/details/${note._id}`}>
           <BsInfoCircle className="text-2xl text-green-800 hover:text-black" />
         </Link>
-        <Link to={`/books/edit/${note._id}`}>
+        <Link to={`/notes/edit/${note._id}`}>
           <AiOutlineEdit className="text-2xl text-yellow-600 hover:text-black" />
         </Link>
-        <Link to={`/books/delete/${note._id}`}>
+        <Link to={`/notes/delete/${note._id}`}>
           <MdOutlineDelete className="text-2xl text-red-600 hover:text-black" />
         </Link>
       </div>

@@ -11,7 +11,7 @@ import BooksCard from "../components/home/NotesCard";
 const Home = () => {
   const [notes, setNotes] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showType, setShowType] = useState("table");
+  const [showType, setShowType] = useState("card");
 
   useEffect(() => {
     setLoading(true);
