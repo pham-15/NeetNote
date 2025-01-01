@@ -12,6 +12,7 @@ app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 3000;
+const MONGO_URI = process.env.MONGO_URI;
 
 app.get("/", (request, response) => {
   console.log(
@@ -25,6 +26,14 @@ app.get("/", (request, response) => {
   response.status(200).send("Welcome to NeetNote");
 });
 
-app.listen(PORT, () => {
-  console.log(`App is listening to port: ${PORT}`);
-});
+mongoose
+  .connect(MONGO_URI)
+  .then(() => {
+    console.log("App is connected to database");
+    app.listen(PORT, () => {
+      console.log(`App is listening to port: ${PORT}`);
+    });
+  })
+  .catch((error) => {
+    console.log("error: ", error);
+  });
