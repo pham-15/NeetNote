@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
+import testRoutes from "./routes/testRoute.js";
 
 dotenv.config();
 
@@ -10,6 +11,9 @@ const app = express();
 // Middleware setup
 app.use(cors());
 app.use(express.json());
+
+// Mount user routes under "/api/users"
+app.use("/api/users", testRoutes);
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
