@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import testRoutes from "./routes/testRoute.js";
+import notesRoutes from "./routes/notesRoutes.js";
 
 dotenv.config();
 
@@ -13,7 +14,9 @@ app.use(cors());
 app.use(express.json());
 
 // Mount user routes under "/api/users"
-app.use("/api/users", testRoutes);
+app.use("/test/users", testRoutes);
+
+app.use("/notes", notesRoutes);
 
 const PORT = process.env.PORT || 3000;
 const MONGO_URI = process.env.MONGO_URI;
