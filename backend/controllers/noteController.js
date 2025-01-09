@@ -27,7 +27,9 @@ export const getUserNotesById = async (req, res) => {
     const user = await User.findById(req.params.id).select("notes");
 
     if (!user) {
-      return res.status(404).json({ message: "getUserNotes: User not found" });
+      return res
+        .status(404)
+        .json({ message: "getUserNotesById: User not found" });
     }
 
     res.status(200).json({ notes: user.notes });
@@ -35,5 +37,41 @@ export const getUserNotesById = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error in getUserNotes: ", error: error.message });
+  }
+};
+
+export const createNewNote = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "createNewNote: User not found" });
+    }
+
+    const { problemNumber, title, difficulty, tags } = req.body;
+
+    if (!problemNumber || !title || !difficulty) {
+      return res.status(400).send({
+        message: "Send the required fields: problemNumber, title, difficulty",
+      });
+    }
+
+    const newNote = {
+      problemNumber,
+      title,
+      difficulty,
+      // Tags are not required
+      tags: tags || [],
+    };
+
+    user.notes.push(newNote);
+    await user.save();
+    res
+      .status(201)
+      .json({ message: "Note created successfully: ", note: newNote });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error in createNewNote: ", error: error.message });
   }
 };
