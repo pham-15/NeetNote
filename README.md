@@ -1,2 +1,2 @@
 # NeetNote
-A website that will make practicing Leetcode faster!
+A website that will make learning and understanding Leetcode faster!
