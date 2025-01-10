@@ -21,6 +21,7 @@ const testSchema = async () => {
           title: "Two Sum",
           difficulty: "easy",
           tags: ["Array", "Hash Table"],
+          note: "This is a test",
         },
       ],
     });

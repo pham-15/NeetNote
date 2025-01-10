@@ -48,11 +48,12 @@ export const createNewNote = async (req, res) => {
       return res.status(404).json({ message: "createNewNote: User not found" });
     }
 
-    const { problemNumber, title, difficulty, tags } = req.body;
+    const { problemNumber, title, difficulty, tags, note } = req.body;
 
-    if (!problemNumber || !title || !difficulty) {
+    if (!problemNumber || !title || !difficulty || !note) {
       return res.status(400).send({
-        message: "Send the required fields: problemNumber, title, difficulty",
+        message:
+          "Send the required fields: problemNumber, title, difficulty, note",
       });
     }
 
@@ -62,6 +63,7 @@ export const createNewNote = async (req, res) => {
       difficulty,
       // Tags are not required
       tags: tags || [],
+      note: note,
     };
 
     user.notes.push(newNote);
@@ -103,5 +105,65 @@ export const deleteNote = async (req, res) => {
     res
       .status(500)
       .json({ message: "Error in deleteNote: ", error: error.message });
+  }
+};
+
+export const getANote = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "getNote: User not found" });
+    }
+
+    const { problemNumber } = req.body;
+    const noteIndex = user.notes.findIndex(
+      (note) => note.problemNumber === problemNumber
+    );
+
+    if (noteIndex === -1) {
+      return res.status(404).json({ message: "getNote: Note not found" });
+    }
+
+    res.status(200).json({
+      message: "Successfully retrieved note ",
+      note: user.notes[noteIndex],
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error in getNote", error: error.message });
+  }
+};
+
+export const editNote = async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ message: "editNote: User not found" });
+    }
+
+    const { problemNumber, title, difficulty, tags, note } = req.body;
+
+    const noteIndex = user.notes.findIndex(
+      (note) => note.problemNumber === problemNumber
+    );
+
+    if (noteIndex === -1) {
+      return res.status(404).json({ message: "editNOte: Note not found" });
+    }
+
+    user.notes[noteIndex].title = title || user.notes[noteIndex].title;
+    user.notes[noteIndex].difficulty =
+      difficulty || user.notes[noteIndex].difficulty;
+    user.notes[noteIndex].tags = tags || user.notes[noteIndex].tags;
+    user.notes[noteIndex].note = note || user.notes[noteIndex].note;
+
+    await user.save();
+    res.status(200).json({
+      message: "Note updated successfully",
+      note: user.notes[noteIndex],
+    });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Error in editNote", error: error.message });
   }
 };

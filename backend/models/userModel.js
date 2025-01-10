@@ -19,6 +19,10 @@ const noteSchema = mongoose.Schema({
     type: [String],
     required: true,
   },
+  note: {
+    type: String,
+    required: true,
+  },
 });
 
 const userSchema = mongoose.Schema(
